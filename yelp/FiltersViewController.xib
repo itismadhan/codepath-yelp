@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FiltersViewController" customModule="yelp" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="jzj-Ff-4PK" id="Nm6-Vl-lkH"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="jzj-Ff-4PK">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="jzj-Ff-4PK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Uww-Dn-0v5"/>
+                <constraint firstItem="jzj-Ff-4PK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="tRr-BU-nK0"/>
+                <constraint firstAttribute="bottom" secondItem="jzj-Ff-4PK" secondAttribute="bottom" id="uC0-OG-nPJ"/>
+                <constraint firstAttribute="trailing" secondItem="jzj-Ff-4PK" secondAttribute="trailing" id="ySn-5M-cql"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
