@@ -51,7 +51,13 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         self.navigationItem.rightBarButtonItem = searchButton
         self.navigationItem.rightBarButtonItem?.target = self
         self.navigationItem.rightBarButtonItem?.action = Selector("searchAction:")
-        // Do any additional setup after loading the view.
+        
+        let cancelButton:UIBarButtonItem = UIBarButtonItem()
+        cancelButton.title = "Cancel"
+        cancelButton.style = UIBarButtonItemStyle.Bordered
+        self.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.leftBarButtonItem?.target = self
+        self.navigationItem.leftBarButtonItem?.action = Selector("cancelAction:")
     }
     
     func searchAction(sender:UIBarButtonItem) {
@@ -64,12 +70,15 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         }
 
         NSNotificationCenter.defaultCenter().postNotificationName("filters", object: self.filters)
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func cancelAction(sender:UIBarButtonItem) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -83,7 +92,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             if (self.sortByExpanded) {
                 var changedIndexPaths = self.changedIndexPathsForSection(indexPath.section, startingRow: 0, endingRow: self.sortByOptions.count, excludingRow: self.sortBySelectedIndex)
                 self.tableView.insertRowsAtIndexPaths(changedIndexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
-            } else { // set value in filters dictionary and helper var
+            } else {
                 self.sortBySelectedIndex = indexPath.row;
                 self.filters["sort"] = NSNumber.numberWithInteger(indexPath.row)
                 var changedIndexPaths = self.changedIndexPathsForSection(indexPath.section, startingRow: 0, endingRow: self.sortByOptions.count, excludingRow: indexPath.row)
@@ -158,6 +167,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.textLabel?.text = self.sortByOptions[self.sortBySelectedIndex]
                 return cell;
             }
+            
         case Filters.DistanceSection.toRaw():
             if (self.distanceExpanded) {
                 var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("UITableViewCell") as UITableViewCell
@@ -173,6 +183,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.textLabel?.text = self.distanceOptions[self.selectedDistanceIndex][1] as? String
                 return cell;
             }
+            
         case Filters.GeneralSection.toRaw():
             var cell:FiltersCell = self.tableView.dequeueReusableCellWithIdentifier("FiltersCell") as FiltersCell
             cell.filterNameLabel.text = self.toggleOptions[indexPath.row][1]
@@ -186,6 +197,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             cell.filterSwitch.removeTarget(self, action: "didToggleFilterSwitch:", forControlEvents: UIControlEvents.ValueChanged)
             cell.filterSwitch.addTarget(self, action: "didToggleFilterSwitch:", forControlEvents: UIControlEvents.ValueChanged)
             return cell;
+            
         case Filters.CategorySection.toRaw():
             if (!self.categoriesExpanded && indexPath.row == self.numberOfCategoriesCollapsed) {
                 var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("AllCategoriesCell") as UITableViewCell

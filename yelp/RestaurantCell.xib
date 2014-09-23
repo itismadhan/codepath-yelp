@@ -36,7 +36,7 @@
                         </variation>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ob8-0Q-3Jk" userLabel="Ratings Image View">
-                        <rect key="frame" x="100" y="34" width="70" height="13"/>
+                        <rect key="frame" x="100" y="33" width="70" height="13"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="KAr-wl-cOQ"/>
                             <constraint firstAttribute="width" constant="70" id="Utb-ZM-FLK"/>
@@ -57,7 +57,7 @@
                         </variation>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lzs-ZG-cBK" userLabel="Address Label">
-                        <rect key="frame" x="100" y="49" width="42" height="21"/>
+                        <rect key="frame" x="100" y="48" width="42" height="21"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="JHw-sv-I7I"/>
                             <constraint firstAttribute="height" constant="20.5" id="zfq-BW-EqL"/>
@@ -120,10 +120,10 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="Dci-UQ-8Gs"/>
                         <exclude reference="nTm-oP-0Ve"/>
                         <exclude reference="54N-IT-rci"/>
                         <exclude reference="6g9-Sn-gPP"/>
-                        <exclude reference="Dci-UQ-8Gs"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

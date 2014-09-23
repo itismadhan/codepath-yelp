@@ -56,8 +56,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func filterAction(sender:AnyObject) {
         let filtersVC = FiltersViewController(nibName: "FiltersViewController", bundle: nil)
-        self.searchBar.hidden = true
-        self.navigationController?.pushViewController(filtersVC, animated: true)
+        let navigationVC = MainNavigationController(rootViewController: filtersVC)
+        self.navigationController?.presentViewController(navigationVC, animated: true, completion: nil)
     }
 
     func getRestaurantsAndLoadTableView() -> Void {
@@ -177,7 +177,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func loadRestaurantsAndShowProgressHUD() -> Void {
         MMProgressHUD.setPresentationStyle(MMProgressHUDPresentationStyle.None)
         MMProgressHUD.showWithStatus("Loading")
-            self.getRestaurantsAndLoadTableView()
+        self.getRestaurantsAndLoadTableView()
     }
     
     // MARK: Search Bar
@@ -197,9 +197,5 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        self.searchBar.hidden = false
     }
 }
