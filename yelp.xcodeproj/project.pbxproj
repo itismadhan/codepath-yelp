@@ -90,11 +90,11 @@
 		5A0A6B0319D0FDE000E23AD3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				5A0D2DBA19CB5C1B00BABB97 /* MainNavigationController.swift */,
 				5A67725519CB4F7A002B4DF8 /* MainViewController.xib */,
 				5A67725419CB4F7A002B4DF8 /* MainViewController.swift */,
 				5A0D2DBF19CB622200BABB97 /* RestaurantCell.xib */,
 				5A0D2DBE19CB622200BABB97 /* RestaurantCell.swift */,
+				5A0D2DBA19CB5C1B00BABB97 /* MainNavigationController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -102,10 +102,10 @@
 		5A0A6B0419D0FDEF00E23AD3 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
-				5A0A6AE719CF475900E23AD3 /* FiltersViewController.swift */,
 				5A0A6AE819CF475900E23AD3 /* FiltersViewController.xib */,
-				5A0A6AEB19CF533E00E23AD3 /* FiltersCell.swift */,
+				5A0A6AE719CF475900E23AD3 /* FiltersViewController.swift */,
 				5A0A6AEC19CF533E00E23AD3 /* FiltersCell.xib */,
+				5A0A6AEB19CF533E00E23AD3 /* FiltersCell.swift */,
 				5A0A6AF019CF6CE600E23AD3 /* ExpandableCell.xib */,
 				5A0A6B3319D1D79900E23AD3 /* ExpandableCell.swift */,
 			);

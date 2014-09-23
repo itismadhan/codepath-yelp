@@ -138,18 +138,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
-    func changedIndexPathsForSection(section:Int, startingRow:Int, endingRow:Int, excludingRow:Int) -> [NSIndexPath] {
-        var ret = [NSIndexPath]();
-        for(var row:Int = startingRow; row < endingRow; ++row){
-            if(row != excludingRow) {
-                var path:NSIndexPath = NSIndexPath(forRow: row, inSection: section)
-                ret.append(path)
-            }
-        }
-        return ret
-    }
-    
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch(indexPath.section){
         case Filters.SortBySection.toRaw():
@@ -237,6 +225,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.sectionTitles.count
     }
@@ -252,6 +241,17 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             self.filters.removeValueForKey(filterKey)
         }
+    }
+    
+    func changedIndexPathsForSection(section:Int, startingRow:Int, endingRow:Int, excludingRow:Int) -> [NSIndexPath] {
+        var ret = [NSIndexPath]();
+        for(var row:Int = startingRow; row < endingRow; ++row){
+            if(row != excludingRow) {
+                var path:NSIndexPath = NSIndexPath(forRow: row, inSection: section)
+                ret.append(path)
+            }
+        }
+        return ret
     }
 }
 

@@ -60,37 +60,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.navigationController?.presentViewController(navigationVC, animated: true, completion: nil)
     }
 
-    func getRestaurantsAndLoadTableView() -> Void {
-        var client = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
-        
-        if(self.searchTerm == nil) {
-            self.searchTerm = "San Francisco"
-        }
-        if((self.filters) == nil) {
-            client.searchWithTerm(self.searchTerm,
-                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-                    self.restaurants = response["businesses"] as [NSDictionary]
-                    self.tableView.reloadData()
-                    self.searchTerm = nil
-                    MMProgressHUD.dismiss()
-                },
-                failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
-                MMProgressHUD.dismiss()
-            })
-        } else {
-            client.search(self.filters as? NSDictionary,
-                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-
-                    self.restaurants = response["businesses"] as [NSDictionary]
-                    self.tableView.reloadData()
-                MMProgressHUD.dismiss()
-                },
-                failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
-                MMProgressHUD.dismiss()
-            })
-        }
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -142,6 +111,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
+    // MARK: Loading images and Progress indicators
     func setRestaurantImageForCellImageView(cell:RestaurantCell, indexPath:NSIndexPath) -> Void {
         let restaurant = self.restaurants[indexPath.row]
         let imageUrl = restaurant["image_url"] as String
@@ -180,7 +150,38 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.getRestaurantsAndLoadTableView()
     }
     
-    // MARK: Search Bar
+    func getRestaurantsAndLoadTableView() -> Void {
+        var client = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
+        
+        if(self.searchTerm == nil) {
+            self.searchTerm = "San Francisco"
+        }
+        if((self.filters) == nil) {
+            client.searchWithTerm(self.searchTerm,
+                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                    self.restaurants = response["businesses"] as [NSDictionary]
+                    self.tableView.reloadData()
+                    self.searchTerm = nil
+                    MMProgressHUD.dismiss()
+                },
+                failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
+                    MMProgressHUD.dismiss()
+            })
+        } else {
+            client.search(self.filters as? NSDictionary,
+                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                    self.restaurants = response["businesses"] as [NSDictionary]
+                    self.tableView.reloadData()
+                    self.filters = nil
+                    MMProgressHUD.dismiss()
+                },
+                failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
+                    MMProgressHUD.dismiss()
+            })
+        }
+    }
+    
+    // MARK: Search Bar Delegate
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
