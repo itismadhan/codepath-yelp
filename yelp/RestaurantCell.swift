@@ -19,9 +19,9 @@ class RestaurantCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        restaurantImageView.layer.cornerRadius = restaurantImageView.frame.size.height/2
-        restaurantImageView.layer.masksToBounds = true;
-        restaurantImageView.layer.borderWidth = 0;
+        self.restaurantImageView.layer.cornerRadius = restaurantImageView.frame.size.height/2
+        self.restaurantImageView.layer.masksToBounds = true;
+        self.restaurantImageView.layer.borderWidth = 0;
         self.nameLabel.font = UIFont.boldSystemFontOfSize(17)
         self.addressLabel.font = UIFont.systemFontOfSize(12)
         self.closedLabel.hidden = true

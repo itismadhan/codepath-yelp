@@ -17,14 +17,10 @@ class MainNavigationController: UINavigationController {
         navigationBarAppearace.tintColor = UIColor.whiteColor()
         navigationBarAppearace.barTintColor = uicolorFromHex(0xd72216)
         navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
-
-        // change navigation item title color
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func uicolorFromHex(rgbValue:UInt32)->UIColor{

@@ -24,11 +24,11 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     var categoriesExpanded:Bool = false
     var selectedCategories = [String]()
     
-    enum FilterSection: Int {
-       case SortBySection = 0
-       case DistanceSection = 1
-       case GeneralSection = 2
-       case CategorySection = 3
+    enum Filters: Int {
+       case SortBySection
+       case DistanceSection
+       case GeneralSection
+       case CategorySection
     }
     
     override func viewDidLoad() {
@@ -75,7 +75,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch (indexPath.section) {
             
-        case FilterSection.SortBySection.toRaw():
+        case Filters.SortBySection.toRaw():
             self.sortByExpanded = !self.sortByExpanded
             self.tableView.beginUpdates()
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -92,7 +92,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             self.tableView.endUpdates()
             break;
             
-        case FilterSection.DistanceSection.toRaw():
+        case Filters.DistanceSection.toRaw():
             self.distanceExpanded = !self.distanceExpanded
             self.tableView.beginUpdates()
             self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -111,7 +111,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             self.tableView.endUpdates()
             break;
             
-        case FilterSection.CategorySection.toRaw():
+        case Filters.CategorySection.toRaw():
             if(!self.categoriesExpanded && indexPath.row == self.numberOfCategoriesCollapsed) {
                 self.categoriesExpanded = !self.categoriesExpanded
             } else {
@@ -143,7 +143,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch(indexPath.section){
-        case FilterSection.SortBySection.toRaw():
+        case Filters.SortBySection.toRaw():
             if (self.sortByExpanded) {
                 var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("UITableViewCell") as UITableViewCell
                 cell.textLabel?.text = self.sortByOptions[indexPath.row];
@@ -158,7 +158,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.textLabel?.text = self.sortByOptions[self.sortBySelectedIndex]
                 return cell;
             }
-        case FilterSection.DistanceSection.toRaw():
+        case Filters.DistanceSection.toRaw():
             if (self.distanceExpanded) {
                 var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("UITableViewCell") as UITableViewCell
                 cell.textLabel?.text = self.distanceOptions[indexPath.row][1] as? String
@@ -173,7 +173,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
                 cell.textLabel?.text = self.distanceOptions[self.selectedDistanceIndex][1] as? String
                 return cell;
             }
-        case FilterSection.GeneralSection.toRaw():
+        case Filters.GeneralSection.toRaw():
             var cell:FiltersCell = self.tableView.dequeueReusableCellWithIdentifier("FiltersCell") as FiltersCell
             cell.filterNameLabel.text = self.toggleOptions[indexPath.row][1]
             var filterKey = self.toggleOptions[indexPath.row][0]
@@ -186,7 +186,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
             cell.filterSwitch.removeTarget(self, action: "didToggleFilterSwitch:", forControlEvents: UIControlEvents.ValueChanged)
             cell.filterSwitch.addTarget(self, action: "didToggleFilterSwitch:", forControlEvents: UIControlEvents.ValueChanged)
             return cell;
-        case FilterSection.CategorySection.toRaw():
+        case Filters.CategorySection.toRaw():
             if (!self.categoriesExpanded && indexPath.row == self.numberOfCategoriesCollapsed) {
                 var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("AllCategoriesCell") as UITableViewCell
                 cell.textLabel?.text = "More"
@@ -212,13 +212,13 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch (section) {
-        case FilterSection.SortBySection.toRaw():
+        case Filters.SortBySection.toRaw():
             return self.sortByExpanded ? self.sortByOptions.count : 1;
-        case FilterSection.DistanceSection.toRaw():
+        case Filters.DistanceSection.toRaw():
             return self.distanceExpanded ? self.distanceOptions.count : 1
-        case FilterSection.GeneralSection.toRaw():
+        case Filters.GeneralSection.toRaw():
             return self.toggleOptions.count
-        case FilterSection.CategorySection.toRaw():
+        case Filters.CategorySection.toRaw():
             return self.categoriesExpanded ? self.categories.count() : self.numberOfCategoriesCollapsed + 1;
         default:
             return 0;

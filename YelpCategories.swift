@@ -38,7 +38,7 @@ class YelpCategories {
     }
     
     func categoryAt(index:Int) -> String {
-        return self.categories[index][1]
+        return self.categories[index][1] //Get the capitalized Category to display
     }
     
     func count() -> Int {

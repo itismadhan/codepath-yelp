@@ -40,18 +40,16 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.navigationItem.leftBarButtonItem?.target = self
         self.navigationItem.leftBarButtonItem?.action = Selector("filterAction:")
         
-        searchBar.frame = CGRectMake(90, 0, 250, 44)
-        searchBar.delegate = self
-        searchBar.tintColor = UIColor.grayColor()
-    
-        self.navigationController?.navigationBar.addSubview(searchBar)
+        self.searchBar.delegate = self
+        self.searchBar.tintColor = UIColor.grayColor()
+        self.searchBar.sizeToFit()
+        self.navigationItem.titleView = searchBar
         
         self.loadRestaurantsAndShowProgressHUD()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "filtersReceived:", name: "filters", object: nil)
     }
     
     func filtersReceived(notification:NSNotification) {
-        println(notification.object)
         self.filters = notification.object
         self.loadRestaurantsAndShowProgressHUD()
     }
@@ -61,38 +59,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.searchBar.hidden = true
         self.navigationController?.pushViewController(filtersVC, animated: true)
     }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-    }
-//    
-//    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-//        self.filterContentForSearchText(searchText)
-//    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        self.searchTerm = searchBar.text
-        self.loadRestaurantsAndShowProgressHUD()
-        searchBar.resignFirstResponder()
-    }
-    
-    func dismissKeyboard() {
-        self.searchBar.resignFirstResponder()
-    }
-    
-    func filterContentForSearchText (searchText: String) {
-        if(searchText.utf16Count == 0) {
-            var timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("dismissKeyboard"), userInfo: nil, repeats: false)
-            isFiltered = false
-        } else {
-            isFiltered = true
-            filteredRestaurants = restaurants.filter{
-                ($0["name"] as NSString).localizedCaseInsensitiveContainsString("\(searchText)")
-            }
-        }
-        self.tableView.reloadData()
-    }
-    
+
     func getRestaurantsAndLoadTableView() -> Void {
         var client = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
         
@@ -105,8 +72,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     self.restaurants = response["businesses"] as [NSDictionary]
                     self.tableView.reloadData()
                     self.searchTerm = nil
+                    MMProgressHUD.dismiss()
                 },
                 failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
+                MMProgressHUD.dismiss()
             })
         } else {
             client.search(self.filters as? NSDictionary,
@@ -114,24 +83,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
                     self.restaurants = response["businesses"] as [NSDictionary]
                     self.tableView.reloadData()
+                MMProgressHUD.dismiss()
                 },
                 failure: {(operation:AFHTTPRequestOperation!, failure:NSError!) -> Void in
+                MMProgressHUD.dismiss()
             })
         }
     }
-    
-    func loadRestaurantsAndShowProgressHUD() -> Void {
-        var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        hud.labelText = "Loading Restaurants"
-        hud.labelColor = UIColor.blackColor()
-        dispatch.async.bg {
-            self.getRestaurantsAndLoadTableView()
-            dispatch.async.main {
-                hud.hide(true)
-            }
-        }
-    }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.layoutMargins = UIEdgeInsetsZero
@@ -139,17 +98,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if(isFiltered) {
-            return self.filteredRestaurants.count
-        } else {
-            return self.restaurants.count
-        }
-    }
-    
+    // MARK: Table View
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var restaurant = NSDictionary()
         if(isFiltered) {
@@ -175,11 +126,20 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.layoutMargins = UIEdgeInsetsZero
         cell.nameLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         cell.nameLabel.numberOfLines = 0
-//        cell.nameLabel.preferredMaxLayoutWidth = cell.nameLabel.bounds.size.width
 
-        cell.restaurantImageView.setImageWithURL(NSURL(string:restaurant["image_url"] as String))
+        if(restaurant["image_url"] != nil) {
+            cell.restaurantImageView.setImageWithURL(NSURL(string:restaurant["image_url"] as String))
+        }
         cell.ratingsImageView.setImageWithURL(NSURL(string:restaurant["rating_img_url_large"] as String))
         return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(isFiltered) {
+            return self.filteredRestaurants.count
+        } else {
+            return self.restaurants.count
+        }
     }
     
     func setRestaurantImageForCellImageView(cell:RestaurantCell, indexPath:NSIndexPath) -> Void {
@@ -214,6 +174,27 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         })
     }
     
+    func loadRestaurantsAndShowProgressHUD() -> Void {
+        MMProgressHUD.setPresentationStyle(MMProgressHUDPresentationStyle.None)
+        MMProgressHUD.showWithStatus("Loading")
+            self.getRestaurantsAndLoadTableView()
+    }
+    
+    // MARK: Search Bar
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        self.searchTerm = searchBar.text
+        self.loadRestaurantsAndShowProgressHUD()
+        searchBar.resignFirstResponder()
+    }
+    
+    func dismissKeyboard() {
+        self.searchBar.resignFirstResponder()
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         self.searchBar.resignFirstResponder()
     }
@@ -221,18 +202,4 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewWillAppear(animated: Bool) {
         self.searchBar.hidden = false
     }
-    
-    override func viewWillLayoutSubviews() {
-        
-    }
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
-    
 }
