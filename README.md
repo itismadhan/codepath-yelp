@@ -1,10 +1,9 @@
 codepath-yelp
 =============
-codepath-yelp
 Yelp Client
 
 Time to complete 20 hours
-codepath-yelp
+
 Project Requirements Search results page
 
 * [x] Required:  Table rows should be dynamic height according to the content height
