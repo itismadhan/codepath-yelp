@@ -26,3 +26,5 @@ BDBOAuth1Manager
 
 
 GIF WalkThrough:
+
+<a href="http://imgur.com/NZDu7Ji"><img src="http://i.imgur.com/NZDu7Ji.gif" title="Hosted by imgur.com" /></a>
